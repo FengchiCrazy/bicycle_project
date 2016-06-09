@@ -7,7 +7,7 @@ import datetime
 
 INTERVAL_MINUTES = 60
 # the derived file from hive
-# **the first four columns of file must be tran_time, rent_netid, return_netid, tran_date**
+# **the first columns of file must be tran_time, rent_netid, return_netid, tran_date**
 PARSE_FILE_NAME = netid_7_to_8
 PARSE_FILE = "%s%sderived%s%s" % (os.path.pardir, os.sep, os.sep, PARSE_FILE_NAME)
 
