@@ -24,8 +24,16 @@ def time_handle(sec_str):
     '''
     if sec_str == 'NULL':
         return None
-    if len(sec_str) <= 6:
-        return (6 - len(sec_str)) * '0' + secstr
+    if len(sec_str) == 5:
+        return '0' + sec_str
+    elif len(sec_str) == 6:
+        return sec_str
+    elif len(sec_str) == 4:
+        return '0' + sec_str[0] + '0' + sec_str[1:]
+    elif len(sec_str) == 3:
+        return '0' + sec_str[0] + '0' + sec_str[1] + '0' + sec_str[2]
+    elif len(sec_str) == 2:
+        return '0000' + sec_str
     else:
         return None
 
