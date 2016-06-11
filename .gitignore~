@@ -137,3 +137,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+matrix_of_net.py~
+*.py~
