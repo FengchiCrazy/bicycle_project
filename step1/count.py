@@ -16,16 +16,8 @@ print len(car_num)
 def combine_date(day_str, sec_str):
     if day_str == 'NULL' or sec_str == 'NULL':
         return ERROR_DATE
-    if len(sec_str) == 5:
-        return day_str + '0' + sec_str
-    elif len(sec_str) == 6:
-        return day_str + sec_str
-    elif len(sec_str) == 4:
-        return day_str + '0' + sec_str[0] + '0' + sec_str[1:]
-    elif len(sec_str) == 3:
-        return day_str + '0' + sec_str[0] + '0' + sec_str[1] + '0' + sec_str[2]
-    else:
-        return ERROR_DATE
+    if len(sec_str) <= 6:
+        return day_str + '0' * (6 - len(sec_str)) + sec_str
 
 def get_date(string):
     return datetime.datetime.strptime(string, "%Y%m%d%H%M%S")
