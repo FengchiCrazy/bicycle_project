@@ -138,3 +138,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *~
+*.png
+*.Rhistory
+step4/output.csv
