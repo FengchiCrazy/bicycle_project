@@ -141,3 +141,6 @@ $RECYCLE.BIN/
 *.png
 *.Rhistory
 step4/output.csv
+
+*.csv
+*.swp
