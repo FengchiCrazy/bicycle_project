@@ -40,9 +40,8 @@ day_count <- tbl_dat %>%
   group_by(date) %>%
   summarise(total = sum(count))
 
-day_count[60:80,]
-install.packages('caret')
-library(caret)
+day_count
+dat$hour    = as.factor(dat$hour)
 
 library(gbm)
 x = model.matrix(count ~ . - date, data = dat)[, -1]
