@@ -7,7 +7,7 @@ import os
 import pdb
 
 # parameter 
-FILE_DIR = "/home/dmc/project/bike/"
+FILE_DIR = "/Users/fengchi/Documents/bicycle_data/"
 CLUSTER_RESULT = "cluster_result.csv"
 START_DATE = "20130813"
 END_DATE   = "20131113" 
@@ -75,6 +75,7 @@ for file_name in os.listdir(FILE_DIR):
     with open(FILE_DIR + file_name, 'r') as data:
         # handle header
         line_ = data.readline()
+        i = 0
         while True:
             line_ = data.readline()
             line  = line_.strip().split(',')
@@ -114,6 +115,12 @@ for file_name in os.listdir(FILE_DIR):
             time_key = rent_date[4:] + '-' + hour
             if time_key in row_key_set:
                 df.loc[time_key, net_key] += 1
+        
+            if i % 100000 == 0:
+                print(file_name + ':' + str(i) + '  lines')
+            i += 1
+
+    print(file_name)
 
 #save result
 df.to_csv("result_all.csv")
