@@ -1,3 +1,14 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# *************************************************************
+#       Filename @  model_prepare_for_32.py
+#         Author @  Fengchi
+#    Create date @  2016-12-14 14:31:15
+#  Last Modified @  2016-12-14 14:44:18
+#    Description @  
+# *************************************************************
+
 import datetime
 from collections import defaultdict
 import pdb
@@ -5,6 +16,8 @@ import pdb
 FILE_NAME = "../data/xiasha_trans.csv"
 START_DATE = '20130902'
 END_DATE   = '20130929'
+MIN_HOUR   = 5
+MAX_HOUR   = 22
 
 hour_range = range(0, 24)
 
@@ -37,14 +50,14 @@ with open(FILE_NAME, 'r') as data:
         count_dict[key] += 1
         
     
-read_file_name = "../data/weather_output.csv"
-target_file_name = "../data/model_32.csv"
+read_file_name = "weather_output.csv"
+target_file_name = "model_32.csv"
 
 fw = open(target_file_name, 'w')
 
 with open(read_file_name, 'r') as data:
     line_ = data.readline()
-    fw.write("date,weekday,hour,temp,sunny,windy,count\n")
+    fw.write("date,weekday,hour,temp,sunny,wind_speed,count\n")
     
     while True:
         line_ = data.readline()
@@ -60,17 +73,21 @@ with open(read_file_name, 'r') as data:
             count = count_dict[key]
         
         date = '2013' + line[0].split("_")[0]
-        weekday = datetime.datetime.strptime(date, '%Y%m%d').strftime("%w")
         hour = line[0].split("_")[1]
-        temp = line[1]
-        sunny = line[2]
-        windy = line[3]
+        if int(hour) <= MIN_HOUR or int(hour) >= MAX_HOUR:
+            continue
+        weekday = line[1]
+        temp = line[2]
+        wind_speed = line[3]
+        sunny = line[4]
         
-        out_list = [date, str(weekday), hour, temp, sunny, windy, str(count)]
+        out_list = [date, str(weekday), hour, temp, sunny, wind_speed, str(count)]
             
         
         fw.write(','.join(out_list) + '\n')
 
 fw.close()
+
+
 
 

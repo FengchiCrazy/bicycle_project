@@ -1,4 +1,4 @@
-setwd("E:\\project\\bicycle_project\\step5\\scripts")
+setwd("~/Github/bicycle_project/step7/scripts")
 
 week_list = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
 dat = read.csv("..//data//model_32.csv")
@@ -39,19 +39,43 @@ x = model.matrix(count ~ . - date, data = dat)[, -1]
 head(x)
 dat_ = as.data.frame(cbind(dat$count, x))
 head(dat_)
-gbm_result = gbm(V1 ~ ., data = dat_, n.trees = 1000, shrinkage = 0.1, 
-                 interaction.depth = 9, bag.fraction = 0.5, train.fraction = 0.5, 
-                 n.minobsinnode = 10, 
-                 cv.folds = 5)
-best_iter = gbm.perf(gbm_result, method = "cv")
+gbm_result = gbm(dat$count ~ . - date, data = data.frame(xgb_dat),
+                 n.trees = 200, shrinkage = 0.1, 
+                 interaction.depth = 5, bag.fraction = 0.6,
+                 n.minobsinnode = 10,
+                 cv.folds = 5,
+                 train.fraction = 0.7
+                 )
+
+gbm_fit = gbm.fit(x = x_train[, -1], y = y_train, distribution = "gaussian",
+                  n.trees = 200, interaction.depth = 5, shrinkage = 0.1, n.minobsinnode = 10)
+
+best_iter = gbm.perf(gbm_result, method = "OOB")
 print(best_iter)
-summary(gbm_result, best_iter)
+pred = predict(gbm_result, data.frame(x_test[, -1]), best_iter)
+write.table(data.frame(pred, y_test), file = "gbm_res.csv", sep = ',', row.names = FALSE, col.names = TRUE)
+
+
+
+summary(gbm_result, n.trees = best_iter)
 plot.gbm(gbm_result, 4, best_iter)
 
 library(caret)
 set.seed(18)
-fitControl <- trainControl(method = "cv", number = 10,returnResamp = "all")
-model2 <- train(V1 ~ ., data=dat_,method='gbm',distribution='guassian',trControl = fitControl,verbose=F,tuneGrid = expand.grid(n.trees=1000,shrinkage= 0.1, interaction.depth=9,n.minobsinnode = 10))
+fitControl <- trainControl(method = "repeatedcv", 
+                           number = 5,
+                           repeats = 5)
+model2 <- train(V1 ~ . - date, data=caret_data, method='gbm',
+                #distribution='guassian',
+                trControl = fitControl,
+                verbose = F,
+                tuneGrid = expand.grid(n.trees=1:4 * 100,
+                                       shrinkage= 1:5 * 0.1,
+                                       interaction.depth=c(1, 3, 5, 9),
+                                       n.minobsinnode = 1:4*10
+                                       # distribution='guassian'
+                                       )
+)
 model2
 plot(model2)
 plot.gbm(gbm_r, 8, best_iter)
