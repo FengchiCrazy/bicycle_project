@@ -3,7 +3,7 @@
 import urllib.request, urllib.parse
 import datetime
 
-START_DATE = "20100101"
+START_DATE = "20130101"
 END_DATE   = "20161130" 
 
 def get_date_range():
@@ -34,11 +34,11 @@ def get_url(city, datef):
 def crawler(city):
     with open("weather_data_%s.csv" % city, 'w') as weather:
         date_range = get_date_range()
-        for date in date_range[:1]:
+        for date in date_range:
             datef = date.strftime("%Y/%m/%d")
             url = get_url(city, datef)
 
-            content = urllib.request.urlopen(URL).read()
+            content = urllib.request.urlopen(url).read()
             content = content.decode()
             contents = content.strip().split('\n')
             date_cont = date.strftime("%Y-%m-%d,")
@@ -49,7 +49,7 @@ def crawler(city):
             print(date)
 
 if __name__ == '__main__':
-    crawler("DC")
+    crawler("Chicago")
 
 
 

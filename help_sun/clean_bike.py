@@ -7,7 +7,7 @@ import os
 import pdb
 
 # parameter 
-FILE_DIR = "/Users/fengchi/Documents/bicycle_data/"
+FILE_DIR = "/home/dmc/project/bike/"
 CLUSTER_RESULT = "cluster_result.csv"
 START_DATE = "20130813"
 END_DATE   = "20131113" 
