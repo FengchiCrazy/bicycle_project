@@ -5,7 +5,7 @@
 #       Filename @  model_prepare_for_32_new.py
 #         Author @  Fengchi
 #    Create date @  2016-12-14 10:59:40
-#  Last Modified @  2016-12-14 14:30:43
+#  Last Modified @  2016-12-14 20:44:14
 #    Description @  
 # *************************************************************
 
@@ -24,50 +24,55 @@ def is_sunny(string):
     else:
         return True
 
-fw = open("weather_output.csv", "w")
-write_list = [
-    "date_key",
-    "weekday",
-    "temperature",
-    "wind_speed",
-    "sunny",
-]
-fw.write(",".join(write_list) + '\n')
+def weather_clean_to_csv():
+    fw = open("weather_output.csv", "w")
+    write_list = [
+        "date_key",
+        "weekday",
+        "temperature",
+        "wind_speed",
+        "sunny",
+    ]
+    fw.write(",".join(write_list) + '\n')
 
-with open(WEATHER_FILE, encoding='gb2312') as data:
-    #header
-    data.readline()
-    for line_ in data:
-        line = line_.strip().split(',')
-        date_ = line[0]
-        hour  = line[1].split(':')[0]
-        temperature = line[2]
-        wind_speed  = float(line[4])
-        weather = line[5]
+    with open(WEATHER_FILE, encoding='gb2312') as data:
+        #header
+        data.readline()
+        for line_ in data:
+            line = line_.strip().split(',')
+            date_ = line[0]
+            hour  = line[1].split(':')[0]
+            temperature = line[2]
+            wind_speed  = float(line[4])
+            weather = line[5]
 
-        date_dt = datetime.datetime.strptime(date_, "%Y-%m-%d")
-        if date_dt < START_DATE_DT or date_dt > END_DATE_DT:
-            continue
+            date_dt = datetime.datetime.strptime(date_, "%Y-%m-%d")
+            if date_dt < START_DATE_DT or date_dt > END_DATE_DT:
+                continue
 
-        date = date_dt.strftime("%m%d")
-        weekday = date_dt.strftime("%w")
-        sunny = "1" if is_sunny(weather) else "0"
+            date = date_dt.strftime("%m%d")
+            weekday = date_dt.strftime("%w")
+            sunny = "1" if is_sunny(weather) else "0"
 
-        date_key = date + '_' + hour
-        
-        to_write = [
-            date_key,
-            weekday,
-            temperature,
-            wind_speed,
-            sunny
-        ]
+            date_key = date + '_' + hour
+            
+            to_write = [
+                date_key,
+                weekday,
+                temperature,
+                wind_speed,
+                sunny
+            ]
 
-        print(to_write)
-        fw.write(",".join([str(x) for x in to_write]) + '\n')
+            print(to_write)
+            fw.write(",".join([str(x) for x in to_write]) + '\n')
 
-fw.close()
+    fw.close()
 
+
+
+if __name__ == '__main__':
+    
         
 
 
