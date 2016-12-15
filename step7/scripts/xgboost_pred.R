@@ -1,7 +1,7 @@
 setwd("~/Github/bicycle_project/step7/scripts")
 
 week_list = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-dat = read.csv("..//data//model_32.csv")
+dat = read.csv("model_4051.csv")
 
 dat$weekday = as.factor(dat$weekday)
 dat$sunny   = as.factor(dat$sunny)
@@ -45,24 +45,27 @@ xgb_fit = train(V1 ~ . - date, caret_data,
                 verbose = 1)
 
 xgb_fit
+xgb_fit$bestTune
+
 plot(xgb_fit)
 
 
 # xgb trainning
-dtrain = xgb.DMatrix(data = xgb_train[,-1], label = y_train)
-dtest  = xgb.DMatrix(data = xgb_test[,-1], label  = y_test)
+dtrain = xgb.DMatrix(data = x_train[,-1], label = y_train)
+dtest  = xgb.DMatrix(data = x_test[,-1], label  = y_test)
 
 watch_list = list(train = dtrain, test = dtest)
 
-bst <- xgb.train(data=dtrain, max.depth=1, 
-                 eta=0.4, nthread = 2, nround=300,
+bst <- xgb.train(data=dtrain, max.depth=3, 
+                 eta=0.1, nthread = 2, nrounds=100,
                  colsample_bytree = 0.8,
+                 gamma = 1,
                  watchlist=watch_list, 
                  objective = "reg:linear")
 plot(bst)
 pred = predict(bst, dtest)
 plot(pred,y_test)
 
-write.table(data.frame(pred, y_test), file = "xgb_res.csv", sep = ',', row.names = FALSE, col.names = TRUE)
+write.table(data.frame(pred, y_test), file = "xgb_4056.csv", sep = ',', row.names = FALSE, col.names = TRUE)
 
 
