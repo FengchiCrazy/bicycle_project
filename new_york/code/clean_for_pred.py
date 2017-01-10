@@ -5,7 +5,7 @@
 #       Filename @  clean_for_traffic.py
 #         Author @  Fengchi
 #    Create date @  2017-01-09 22:42:49
-#  Last Modified @  2017-01-10 11:08:24
+#  Last Modified @  2017-01-10 23:54:19
 #    Description @  
 # *************************************************************
 
@@ -16,9 +16,12 @@ import pdb
 DATA_PATH = '/home/dongfengchi/bicycle_data/NYC/data'
 TIME_FORMAT1 = "%Y-%m-%d %H:%M:%S"
 TIME_FORMAT2 = "%m/%d/%Y %H:%M"
+TIME_FORMAT3 = "%m/%d/%Y %H:%M:%S"
 
 
 def remove_quote(string):
+    if len(string) < 1:
+        return string
     if string[0] == '"':
         return string[1:-1]
     return string
@@ -59,48 +62,6 @@ for file_name in os.listdir(DATA_PATH):
         for line_ in data:
             line = [remove_quote(x) for x in line_.strip().split(',')]
             
-            rent_time = line[header_index['starttime']]
-            user_type = line[header_index['usertype']]
-            birth_year = line[header_index['birth year']]
-            gender     = line[header_index['gender']]
-
-            try:
-                rent_time_dt = datetime.datetime.strptime(rent_time, TIME_FORMAT1)
-            except:
-                rent_time_dt = datetime.datetime.strptime(rent_time, TIME_FORMAT2)
-            year = rent_time_dt.year
-            month = rent_time_dt.month
-            
-            if user_type == 'Subscriber':
-                sub = '1'
-
-                if birth_year == "\\N":
-                    age = "NA"
-                else:
-                    age_ = year - int(birth_year)
-                    if age_ > 70:
-                        age = '>70'
-                    else:
-                        for i in range(1, 8):
-                            if age_ < i * 10:
-                                age = i * 10
-                                break
-
-                # Male means 1
-                if gender == "1":
-                    gend = "M"
-                elif gender == "2":
-                    gend = "F"
-                else:
-                    gend = "NA"
-            else:
-                # Customer
-                sub = '0'
-                age = "NA"
-                gend = "NA"
-
-            key = tuple([str(x) for x in [year, month, sub, age, gend]])
-            data_dict[key] += 1
 
         print('%s finished!' % file_name)
 
