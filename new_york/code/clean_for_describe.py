@@ -5,7 +5,7 @@
 #       Filename @  clean_for_traffic.py
 #         Author @  Fengchi
 #    Create date @  2017-01-09 22:42:49
-#  Last Modified @  2017-01-11 10:01:50
+#  Last Modified @  2017-01-11 21:51:01
 #    Description @  
 # *************************************************************
 
@@ -111,6 +111,7 @@ for file_name in os.listdir(DATA_PATH):
         print('%s finished!' % file_name)
 
 fw = open("describe.csv", "w")
+fw.write('year,month,subscibe,age,gender,count' + '\n')
 for key, cnt in data_dict.items():
     to_write = list(key)
     to_write.append(str(cnt))

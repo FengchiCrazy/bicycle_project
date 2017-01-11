@@ -5,7 +5,7 @@
 #       Filename @  clean_for_traffic.py
 #         Author @  Fengchi
 #    Create date @  2017-01-09 22:42:49
-#  Last Modified @  2017-01-11 12:20:22
+#  Last Modified @  2017-01-11 21:51:23
 #    Description @  
 # *************************************************************
 
@@ -166,8 +166,9 @@ if __name__ == "__main__":
 
     fw = open("pred.csv", "w")
     data_list.append('count')
+    fw.write(','.join(['year', 'month', 'day', 'weekday'] + data_list) + '\n')
     for key, dict_ in final_data.items():
-        to_write = [key.year, key.month, key.day]
+        to_write = [key.year, key.month, key.day, key.isoweekday()]
         for item in data_list:
             to_write.append(dict_.get(item, 'NA'))
         fw.write(','.join([str(x) for x in to_write]) + '\n')
