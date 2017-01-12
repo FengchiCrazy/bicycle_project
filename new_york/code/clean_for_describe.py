@@ -5,7 +5,7 @@
 #       Filename @  clean_for_traffic.py
 #         Author @  Fengchi
 #    Create date @  2017-01-09 22:42:49
-#  Last Modified @  2017-01-11 21:51:01
+#  Last Modified @  2017-01-12 10:09:28
 #    Description @  
 # *************************************************************
 
@@ -33,6 +33,8 @@ def get_data_collection():
 
     years     = range(2013, 2017)
     months    = range(1, 13)
+    weekdays  = range(1, 8)
+    hours     = range(0, 24)
     subsciber = ['0', '1']
     ages      = list(range(10, 71, 10)) + ['>70', 'NA']
     genders   = ['M', 'F', 'NA']
@@ -40,11 +42,13 @@ def get_data_collection():
     # init data_dict
     for year in years:
         for month in months:
-            for sub in subsciber:
-                for age in ages:
-                    for gender in genders:
-                        key = tuple([str(x) for x in [year, month, sub, age, gender]])
-                        data_dict[key] = 0
+            for weekday in weekdays:
+                for hour in hours:
+                    for sub in subsciber:
+                        for age in ages:
+                            for gender in genders:
+                                key = tuple([str(x) for x in [year, month, weekday, hour, sub, age, gender]])
+                                data_dict[key] = 0
     return data_dict
 
 data_dict = get_data_collection()
@@ -76,6 +80,8 @@ for file_name in os.listdir(DATA_PATH):
                     rent_time_dt = datetime.datetime.strptime(rent_time, TIME_FORMAT3)
             year = rent_time_dt.year
             month = rent_time_dt.month
+            weekday = rent_time_dt.isoweekday()
+            hour  = rent_time_dt.hour
             
             if user_type == 'Subscriber':
                 sub = '1'
@@ -105,13 +111,13 @@ for file_name in os.listdir(DATA_PATH):
                 age = "NA"
                 gend = "NA"
 
-            key = tuple([str(x) for x in [year, month, sub, age, gend]])
+            key = tuple([str(x) for x in [year, month, weekday, hour, sub, age, gend]])
             data_dict[key] += 1
 
         print('%s finished!' % file_name)
 
 fw = open("describe.csv", "w")
-fw.write('year,month,subscibe,age,gender,count' + '\n')
+fw.write('year,month,weekday,hour,subscibe,age,gender,count' + '\n')
 for key, cnt in data_dict.items():
     to_write = list(key)
     to_write.append(str(cnt))
