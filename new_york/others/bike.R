@@ -1,11 +1,11 @@
 library(readr)
-bike = read_csv("201609-citibike-tripdata.csv")
+bike = read_csv("../../ny/201609-citibike-tripdata.csv")
 bike$starttime = as.POSIXct(bike$starttime,format="%m/%d/%Y %H:%M:%S")
-print(paste("×ÔĞĞ³µÊı:",length(unique(bike$bikeid)),sep=""))
-print(paste("Õ¾µãÊı:",length(unique(bike$`start station id`)),sep=""))
+print(paste("è‡ªè¡Œè½¦æ•°:",length(unique(bike$bikeid)),sep=""))
+print(paste("ç«™ç‚¹æ•°:",length(unique(bike$`start station id`)),sep=""))
 
-# ·ÖÊ±¼ä¶Î¿¼ÂÇ½è³µ´ÎÊı£¬ÒÔstarttimeÎª×¼
-# ´æÔÚÁ½¶Î²¨·å
+# åˆ†æ—¶é—´æ®µè€ƒè™‘å€Ÿè½¦æ¬¡æ•°ï¼Œä»¥starttimeä¸ºå‡†
+# å­˜åœ¨ä¸¤æ®µæ³¢å³°
 bike$hid = format(bike$starttime,"%H")
 a=paste(00:23,"00",sep = ":")
 b=paste(01:24,"00",sep = ":")
@@ -14,32 +14,32 @@ names(cc)=paste(a,b,sep="-")
 # par(las = 3,cex.axis=.8)
 barplot(cc,col = "lightblue")
 
-# Æµ·±Õ¾µã·ÖÎö£ºÒÔstart stationÎª×¼
-# ×İ×ø±ê¿ÉÒÔÀí½âÎª²Ù×÷´ÎÊı
+# é¢‘ç¹ç«™ç‚¹åˆ†æï¼šä»¥start stationä¸ºå‡†
+# çºµåæ ‡å¯ä»¥ç†è§£ä¸ºæ“ä½œæ¬¡æ•°
 stid = table(bike$`start station id`)
 sstid = stid[order(stid,decreasing = T)]
 s = c(seq(0,7000,by = 200),
       seq(8000,17000,by=1000))
-# 0-7000´Î°´200Îª¼ä¸ô,
-# 8000-17000°´1000Îª¼ä¸ô
+# 0-7000æ¬¡æŒ‰200ä¸ºé—´éš”,
+# 8000-17000æŒ‰1000ä¸ºé—´éš”
 sstid = cut(sstid,breaks = s)
 sstid = table(sstid)
 opar = par(no.readonly = T)
 par(mar = c(5,7,4,2),las = 1,cex.axis=.8)
-barplot(sstid,xlab = "³µÕ¾Êı",col = "lightblue",horiz = T)
+barplot(sstid,xlab = "è½¦ç«™æ•°",col = "lightblue",horiz = T)
 par(opar)
-# Æµ·±Õ¾µã·ÖÎö£ºÒÔend stationÎª×¼
+# é¢‘ç¹ç«™ç‚¹åˆ†æï¼šä»¥end stationä¸ºå‡†
 etid = table(bike$`end station id`)
 eetid = etid[order(etid,decreasing = T)]
 eetid = cut(eetid,breaks = s)
 eetid = table(eetid)
 opar = par(no.readonly = T)
 par(mar = c(5,7,4,2),las = 1,cex.axis=.8)
-barplot(eetid,xlab = "³µÕ¾Êı",col = "lightblue",horiz = T)
+barplot(eetid,xlab = "è½¦ç«™æ•°",col = "lightblue",horiz = T)
 par(opar)
 
-# 9ÔÂ·¢Éú½è»¹´ÎÊı×ö¶àµÄ³µÕ¾ÎªÍ¬Ò»¸ö
-# Êä³ö½è¡¢»¹´ÎÊı ¾­Î³¶È name
+# 9æœˆå‘ç”Ÿå€Ÿè¿˜æ¬¡æ•°åšå¤šçš„è½¦ç«™ä¸ºåŒä¸€ä¸ª
+# è¾“å‡ºå€Ÿã€è¿˜æ¬¡æ•° ç»çº¬åº¦ name
 names(which.max(stid))
 names(which.max(etid))
 stid[which.max(stid)]
@@ -49,8 +49,8 @@ c(bike$`start station latitude`[bike$`start station id`==519][1],
 bike$`start station name`[bike$`start station id`==519][1]
 
 
-# Æµ·±³µÁ¾·ÖÎö
-# ×İ×ø±êÎªÊ¹ÓÃ´ÎÊı
+# é¢‘ç¹è½¦è¾†åˆ†æ
+# çºµåæ ‡ä¸ºä½¿ç”¨æ¬¡æ•°
 bid = table(bike$bikeid)
 bbid = bid[order(bid,decreasing = T)]
 min(bbid)
@@ -60,55 +60,55 @@ bbid = cut(bbid,breaks = c(0,5,s))
 bbid = table(bbid)
 opar = par(no.readonly = T)
 par(mar = c(5,4,4,2),las = 1,cex.axis=.8)
-# ²»Í¬Ê¹ÓÃ´ÎÊıÇø¼ä³µÁ¾Êı
-barplot(bbid,xlab = "³µÁ¾Êı",col = "lightblue",horiz = T)
+# ä¸åŒä½¿ç”¨æ¬¡æ•°åŒºé—´è½¦è¾†æ•°
+barplot(bbid,xlab = "è½¦è¾†æ•°",col = "lightblue",horiz = T)
 par(opar)
 
 sum(bid<5)
-# 61Á¾³µ9ÔÂÊ¹ÓÃ´ÎÊıĞ¡ÓÚ5´Î
+# 61è¾†è½¦9æœˆä½¿ç”¨æ¬¡æ•°å°äº5æ¬¡
 N = names(bid[bid<5])
 B = bike[bike$bikeid%in%N,]
-# 16722ºÅ×ÔĞĞ³µ
+# 16722å·è‡ªè¡Œè½¦
 bi = bike[bike$bikeid == "16722",]
 bi$did = format(bi$starttime,"%d")
 plot(bi$did,bi$tripduration)
 
 
-# ¶¨ÒåÒ»´ÎËğ»µ£ºÆğÊ¼Õ¾ºÍ½áÊøÕ¾Ò»ÖÂ£¬Ê±¼äĞ¡ÓÚ1·Ö°ëÖÓ
+# å®šä¹‰ä¸€æ¬¡æŸåï¼šèµ·å§‹ç«™å’Œç»“æŸç«™ä¸€è‡´ï¼Œæ—¶é—´å°äº1åˆ†åŠé’Ÿ
 may = bike[bike$tripduration<90,]
 may2 = may[may$`start station id`==may$`end station id`,]
 tt=table(may2$bikeid)
 table(tt)
 
-# Ëğ»µÊ¶±ğ
-# ³öÏÖÒÉËÆËğ»µ´ÎÊıÎª3µÄµ¥³µ
+# æŸåè¯†åˆ«
+# å‡ºç°ç–‘ä¼¼æŸåæ¬¡æ•°ä¸º3çš„å•è½¦
 names(tt[tt==3])
 bike3 = bike[bike$bikeid == "25084",]
 bike3$did = format(bike3$starttime,"%d")
 plot(bike3$did,bike3$tripduration)
 
-# ³öÏÖÒÉËÆËğ»µ´ÎÊıÎª4µÄµ¥³µ
+# å‡ºç°ç–‘ä¼¼æŸåæ¬¡æ•°ä¸º4çš„å•è½¦
 names(tt[tt==4])
 bike4 = bike[bike$bikeid == "14680",]
 bike4$did = format(bike4$starttime,"%d")
 plot(bike4$did,bike4$tripduration)
 
-# ³öÏÖÒÉËÆËğ»µ´ÎÊıÎª5µÄµ¥³µ
+# å‡ºç°ç–‘ä¼¼æŸåæ¬¡æ•°ä¸º5çš„å•è½¦
 names(tt[tt==5])
 bike5 = bike[bike$bikeid == "22222",]
 bike5$did = format(bike5$starttime,"%d")
 plot(bike5$did,bike5$tripduration)
 
 
-# ³öÏÖÒÉËÆËğ»µ´ÎÊıÎª6µÄµ¥³µ
+# å‡ºç°ç–‘ä¼¼æŸåæ¬¡æ•°ä¸º6çš„å•è½¦
 names(tt[tt==6])
 bike6 = bike[bike$bikeid == "22449",]
 bike6$did = format(bike6$starttime,"%d")
 plot(bike6$did,bike6$tripduration)
 
-# ³öÏÖÒÉËÆËğ»µ´ÎÊıÎª11µÄµ¥³µ
+# å‡ºç°ç–‘ä¼¼æŸåæ¬¡æ•°ä¸º11çš„å•è½¦
 names(tt[tt==11])
 bike11 = bike[bike$bikeid == "23759",]
 bike11$did = format(bike11$starttime,"%d")
-plot(bike11$did,bike11$tripduration)
+plot(bike11$did,bike11$tripduration, xlab = "date", ylab = "trip duration", main = "23759 bike use time")
 
