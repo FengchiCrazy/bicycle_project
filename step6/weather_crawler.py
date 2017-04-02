@@ -28,7 +28,7 @@ def get_url(city, datef):
     elif city == "DC":
         url += "KDCA/" + datef + "/DailyHistory.html?req_city=Washington&req_state=DC&req_statename=District+of+Columbia&format=1"
     elif city == "Beijing":
-        url += 
+        pass
     
     return url
         
